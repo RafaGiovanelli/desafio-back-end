@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { TaskService } from './shared/task.service/task.service';
-import { Task } from './shared/task/task';
+import { TaskService } from './task.service';
+import { Task } from './schemas/task';
 
 @Controller('tasks')
 export class TasksController 

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Task } from '../task/task';
-import { log } from 'console';
+import { Task } from './schemas/task';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
