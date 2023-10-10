@@ -10,7 +10,7 @@ import { MongooseModule } from '@nestjs/mongoose';
         {
                 imports: 
                 [
-                        MongooseModule.forFeature([{name: 'Task', schema: BlingSchema}])
+                        MongooseModule.forFeature([{name: 'Bling', schema: BlingSchema}])
                 ],
                 controllers: [BlingController],
                 providers: [BlingService]

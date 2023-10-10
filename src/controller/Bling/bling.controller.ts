@@ -34,6 +34,6 @@ export class BlingController
     @Delete(':id')
     async delete(@Param('id') id: string)
     {
-        this.blingService.delete(id);
+        return this.blingService.delete(id);
     }
 }
