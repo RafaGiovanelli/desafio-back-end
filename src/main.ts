@@ -8,9 +8,8 @@ async function bootstrap() {
 }
 bootstrap();
 
-async function buscaDadosAxios()
+async function initConfigs()
 {
-  const response = await axios.get('https://api.adviceslip.com/advice')
-  console.log(response.data);
+  require('dotenv').config();
 }
-buscaDadosAxios();
+initConfigs();
