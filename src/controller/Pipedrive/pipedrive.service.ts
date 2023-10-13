@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { Pipedrive } from './schemas/pipedrive';
+import { PipedriveDocument } from './schemas/pipedrive.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import axios from 'axios';
 import { stringify } from 'qs';
-import { json } from 'stream/consumers';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class PipedriveService 
@@ -12,45 +12,36 @@ export class PipedriveService
     host: string = process.env.PIPEDRIVE_HOST;
     token: string = process.env.PIPEDRIVE_TOKEN;
 
-    constructor(@InjectModel('Pipedrive') private readonly pipedriveModel: Model<Pipedrive>){}
+    constructor(@InjectModel('Pipedrive') private readonly pipedriveModel: Model<PipedriveDocument>){}
 
     async getAllProducts()
     {
-        const query = {api_token: String(this.token)}
-        const queryString = stringify(query)
-        const res = await axios.get(`${this.host}/products?${queryString}`);
-        
-
-        return res.data;
+        return this.pipedriveModel.find().exec();
     }
 
     async getProductById (id: string)
     {
-        const query = {api_token: String(this.token)}
-        const queryString = stringify(query)
-        const res = await axios.get(`${this.host}/products?${queryString}`); 
-        console.log(this.host, queryString)
-        return res.data;
+        return this.pipedriveModel.findById(id).exec();
     }
 
-    async addProduct (body: any)
+    async createProducts (body: any)
     {
         const query = {api_token: String(this.token)}
         const queryString = stringify(query);
         const res = await axios.post(`${this.host}/products?${queryString}`, body); 
-        console.log(JSON.stringify(res.data, null, 4));
-        await this.pipedriveModel.create(res.data);
-        
+        res.data.data['id'] = new mongoose.Types.ObjectId();
+        await this.pipedriveModel.create(res.data.data);
         return res.data;
+    }
+
+    //Ajustar o update, pois nao esta buscando o id correto.
+    async updateProducts(body: any, id: string)
+    {
+        return this.pipedriveModel.updateOne({_id : id}, body).exec();
     }
 
     async deleteProducts(id: string)
     {
-        const query = {api_token: String(this.token)}
-        const queryString = stringify(query)
-        const res = await axios.delete(`${this.host}/products?${id},${queryString}`);
-        return res.data;
+        return this.pipedriveModel.deleteOne({_id : id}).exec();
     }
-
-    
 }

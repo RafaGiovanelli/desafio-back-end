@@ -1,21 +1,44 @@
-import * as mongoose from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-export const PipedriveSchema = new mongoose.Schema
-    (
+export type PipedriveDocument = Pipedrive & Document;
+
+@Schema()
+export class Pipedrive {
+
+    @Prop()
+    name: string;
+
+    @Prop()
+    code: string;
+
+    @Prop()
+    unit: string;
+
+    @Prop()
+    tax: number;
+
+    @Prop()
+    active_flag: boolean;
+
+    @Prop()
+    selectable: boolean;
+    
+    @Prop()
+    visible_to: string;
+
+    @Prop()
+    owner_id: string;
+
+    @Prop()
+    prices:[
         {
-            name: String,
-            code: String,
-            unit: String,
-            tax: Number,
-            active_flag: Boolean,
-            selectable: Boolean,
-            visible_to: String,
-            owner_id: String,
-            prices:
-                [
-                    {
-                        currency: String, price: Number
-                    }
-                ]
+            currency: string, 
+            price: Array<any>
         }
-    );
+    ];
+// () Função
+// [] Array
+// {} Objeto
+}
+
+export const PipedriveSchema = SchemaFactory.createForClass(Pipedrive);

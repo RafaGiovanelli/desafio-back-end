@@ -1,65 +1,40 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { PipedriveService } from './pipedrive.service';
-import { Pipedrive } from './schemas/pipedrive';
+import { CreateProduct } from './schemas/create-products';
 
 @Controller('pipedrive')
 export class PipedriveController 
 {
     constructor(private pipedriveService: PipedriveService){}
 
-    // @Get() 
-    // async getAll() : Promise<Pipedrive[]>
-    // { 
-    //     return this.pipedriveService.getAll();
-    // }
-
-    @Get()
-    async getAllProducts() : Promise<Pipedrive>
+    @Get('products/')
+    getAllProducts()
     {
         return this.pipedriveService.getAllProducts();
     }
-    
-    // @Get(':id') 
-    // async getById(@Param('id') id: string) : Promise<Pipedrive>
-    // { 
-    //     return this.pipedriveService.getById(id);
-    // }
 
-    @Get(':id') 
-    async getProductById(@Param('id') id: string)// : Promise<Pipedrive>
+    @Get('products/:id') 
+    getProductById(@Param('id') id: string)// : Promise<PipedriveDocument>
     { 
         return this.pipedriveService. getProductById(id);
     }
-
-    // @Post()
-    // async create(@Body() pipedrive: Pipedrive) : Promise<Pipedrive>
-    // {
-    //     return this.pipedriveService.create(pipedrive);
-    // }
-
+    
     @Post("products/create")
-    async addProduct(@Body() pipedrive: any) //@Query() query: any) Query string para complementar a rota.
+    createProducts(@Body() pipedrive: CreateProduct) //@Query() query: any) Query string para complementar a rota.
     {
-        return this.pipedriveService.addProduct(pipedrive);
+        return this.pipedriveService.createProducts(pipedrive);
     }
 
-    // @Put(':id')
-    // async update(@Param('id') id: string, @Body() pipedrive: Pipedrive) : Promise<Pipedrive>
-    // {
-    //     return this.pipedriveService.update(id, pipedrive);
-    // }
+    @Put("products/:id")
+    updateProducts(@Body() body: any, @Param("id") id: string)
+    {
+        return this.pipedriveService.updateProducts(body, id);
+    }
 
-    @Delete(':id')
-    async deleteProducts(@Param('id') id: string)
+    @Delete('products/:id')
+    deleteProducts(@Param('id') id: string)
     {
         return this.pipedriveService.deleteProducts(id);
     }
-
-    // @Delete(':id')
-    // async delete(@Param('id') id: string)
-    // {
-    //     return this.pipedriveService.delete(id);
-    // }
-
     
 }
