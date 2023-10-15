@@ -34,7 +34,6 @@ export class PipedriveService
         return res.data;
     }
 
-    //Ajustar o update, pois nao esta buscando o id correto.
     async updateProducts(body: any, id: string)
     {
         return this.pipedriveModel.updateOne({_id : id}, body).exec();
